@@ -1,4 +1,4 @@
-docker_name:=lab1_222616
+docker_name:=lab2_222616
 container_name:=my_container
 
 docker_build:
