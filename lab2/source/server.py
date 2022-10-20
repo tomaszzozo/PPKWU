@@ -27,18 +27,19 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(str(now).encode()[11:19])
         else:
             parameters = self.path[2:].split('&')
-            if len(parameters) != 2:
-            	super().do_GET()
-            p1 = parameters[0].split('=')
-            p2 = parameters[1].split('=')
-            parameters = [p1[0], p2[0]]
-            values = [p1[1], p2[1]]
-            if 'cmd' in parameters and 'str' in parameters and values[0] == 'rev':
-            	self.protocol_version = 'HTTP/1.1'
-            	self.send_response(200)
-            	self.send_header("Content-type", "text/html; charset=UTF-8")
-            	self.end_headers()            
-            	self.wfile.write(values[1][::-1].encode())
+            if len(parameters) == 2:
+		        p1 = parameters[0].split('=')
+		        p2 = parameters[1].split('=')
+		        parameters = [p1[0], p2[0]]
+		        values = [p1[1], p2[1]]
+		        if 'cmd' in parameters and 'str' in parameters and values[0] == 'rev':
+		        	self.protocol_version = 'HTTP/1.1'
+		        	self.send_response(200)
+		        	self.send_header("Content-type", "text/html; charset=UTF-8")
+		        	self.end_headers()            
+		        	self.wfile.write(values[1][::-1].encode())
+		        else:
+		        	super().do_GET()
             else:
             	super().do_GET()
 # --- main ---
