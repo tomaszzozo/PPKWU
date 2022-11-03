@@ -8,23 +8,24 @@ import datetime
 
 class web_server(http.server.SimpleHTTPRequestHandler):
     
-    def do_GET(self):
+	def do_GET(self):
 
-        print(self.path)
+		print(self.path)
         
-        if self.path.startswith('/?str='):
-        	parameter = self.path[6:]
-        	lowercase = sum(1 for c in parameter if c.islower())
-        	uppercase = sum(1 for c in parameter if c.isupper())
-        	digits = sum(1 for c in parameter if c.isdigit())
-        	special = sum(1 for c in parameter if not c.isalnum())
-        	self.protocol_version = 'HTTP/1.1'
-    		self.send_response(200)
-            	self.send_header("Content-type", "text/html; charset=UTF-8")
-            	self.end_headers()            
-        	self.wfile.write(f'{ "lowercase" : {lowercase}, "uppercase" : {uppercase}, "digits" : {digits}, "special" : {special}}'.encode())
-        else:
-        	super().do_GET()
+		if self.path.startswith('/?str='):
+			parameter = self.path[6:]
+			lowercase = sum(1 for c in parameter if c.islower())
+			uppercase = sum(1 for c in parameter if c.isupper())
+			digits = sum(1 for c in parameter if c.isdigit())
+			special = sum(1 for c in parameter if not c.isalnum())
+			self.protocol_version = 'HTTP/1.1'
+			self.send_response(200)
+			self.send_header("Content-type", "text/html; charset=UTF-8")
+			self.end_headers()  
+			response = '{' + f' "lowercase" : {lowercase}, "uppercase" : {uppercase}, "digits" : {digits}, "special" : {special}' + '}'        
+			self.wfile.write(response.encode())
+		else:
+			super().do_GET()
 # --- main ---
 
 PORT = 4080
