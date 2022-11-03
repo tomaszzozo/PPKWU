@@ -13,11 +13,15 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 		print(self.path)
         
 		if self.path.startswith('/?str='):
-			parameter = self.path[6:]
-			lowercase = sum(1 for c in parameter if c.islower())
-			uppercase = sum(1 for c in parameter if c.isupper())
-			digits = sum(1 for c in parameter if c in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
-			special = sum(1 for c in parameter if not c.isalnum())
+			for c in self.path[6:]:
+				if c.islower():
+					lowercase += 1
+				elif c.isupper():
+					uppercase += 1
+				elif c in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+					digits += 1
+				else:
+					special += 1
 			self.protocol_version = 'HTTP/1.1'
 			self.send_response(200)
 			self.send_header("Content-type", "text/html; charset=UTF-8")
