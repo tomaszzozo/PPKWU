@@ -3,6 +3,7 @@ import http.server
 import socketserver
 import os
 import datetime
+from urllib.parse import unquote
 
 #print('source code for "http.server":', http.server.__file__)
 
@@ -13,10 +14,10 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 		print(self.path)
         
 		if self.path.startswith('/?str='):
-			string = self.path[6:]
+			string = unquote(self.path[6:])
 			lowercase = sum(1 for c in string if c.islower())
 			uppercase = sum(1 for c in string if c.isupper())
-			digits = sum(list(map(lambda x:1 if x.isdigit() else 0,set(a))))
+			digits = sum(list(map(lambda x:1 if x.isdigit() else 0,set(string))))
 			special = len(string)-lowercase-uppercase-digits
 			self.protocol_version = 'HTTP/1.1'
 			self.send_response(200)
