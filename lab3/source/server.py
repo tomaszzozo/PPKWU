@@ -13,15 +13,19 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 		print(self.path)
         
 		if self.path.startswith('/?str='):
+			lowercase = 0
+			uppercase = 0
+			digits = 0
+			special = 0
 			for c in self.path[6:]:
 				if c.islower():
 					lowercase += 1
 				elif c.isupper():
 					uppercase += 1
-				elif c in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
-					digits += 1
-				else:
+				elif c not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
 					special += 1
+				else:
+					digits += 1
 			self.protocol_version = 'HTTP/1.1'
 			self.send_response(200)
 			self.send_header("Content-type", "text/html; charset=UTF-8")
