@@ -16,7 +16,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 			parameter = self.path[6:]
 			lowercase = sum(1 for c in parameter if c.islower())
 			uppercase = sum(1 for c in parameter if c.isupper())
-			digits = sum(1 for c in parameter if c in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+			digits = sum(1 for c in parameter if c in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
 			special = sum(1 for c in parameter if not c.isalnum())
 			self.protocol_version = 'HTTP/1.1'
 			self.send_response(200)
