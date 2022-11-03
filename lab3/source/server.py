@@ -12,36 +12,19 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 
         print(self.path)
         
-        if self.path == '/':
-            self.protocol_version = 'HTTP/1.1'
-            self.send_response(200)
-            self.send_header("Content-type", "text/html; charset=UTF-8")
-            self.end_headers()            
-            self.wfile.write(b"Hello World!<br>")
-        elif self.path == '/?cmd=time':
-            self.protocol_version = 'HTTP/1.1'
-            self.send_response(200)
-            self.send_header("Content-type", "text/html; charset=UTF-8")
-            self.end_headers()            
-            now = datetime.datetime.now()
-            self.wfile.write(str(now).encode()[11:19])
+        if self.path.startswith('/?str='):
+        	parameter = self.path[6:]
+        	lowercase = sum(1 for c in parameter if c.islower())
+        	uppercase = sum(1 for c in parameter if c.isupper())
+        	digits = sum(1 for c in parameter if c.isdigit())
+        	special = sum(1 for c in parameter if not c.isalnum())
+        	self.protocol_version = 'HTTP/1.1'
+    		self.send_response(200)
+            	self.send_header("Content-type", "text/html; charset=UTF-8")
+            	self.end_headers()            
+        	self.wfile.write(f'{ "lowercase" : {lowercase}, "uppercase" : {uppercase}, "digits" : {digits}, "special" : {special}}'.encode())
         else:
-            parameters = self.path[2:].split('&')
-            if len(parameters) == 2:
-		        p1 = parameters[0].split('=')
-		        p2 = parameters[1].split('=')
-		        parameters = [p1[0], p2[0]]
-		        values = [p1[1], p2[1]]
-		        if 'cmd' in parameters and 'str' in parameters and values[0] == 'rev':
-		        	self.protocol_version = 'HTTP/1.1'
-		        	self.send_response(200)
-		        	self.send_header("Content-type", "text/html; charset=UTF-8")
-		        	self.end_headers()            
-		        	self.wfile.write(values[1][::-1].encode())
-		        else:
-		        	super().do_GET()
-            else:
-            	super().do_GET()
+        	super().do_GET()
 # --- main ---
 
 PORT = 4080
