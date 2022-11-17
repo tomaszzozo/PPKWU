@@ -14,14 +14,13 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 		print(self.path)
         
 		if self.path.startswith('/?'):
-			parsed_url = urlparse(self.path)
-			parse_qs(parsed_url.query)
+			query = urlparse(self.path).query
 			query_components = dict(qc.split("=") for qc in query.split("&"))
 			self.protocol_version = 'HTTP/1.1'
 			self.send_response(200)
 			self.send_header("Content-type", "text/html; charset=UTF-8")
 			self.end_headers()  
-			response = str(query_components)       
+			response = str(query_components['test'])       
 			self.wfile.write(response.encode())
 							
 			return
