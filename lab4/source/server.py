@@ -24,8 +24,6 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 			num2 = int(query_components["num2"])
 			response = '{' + f'"sum" : {num1+num2}, "sub" : {num1-num2}, "mul" : {num1*num2}, "div" : {num1//num2}, "mod" : {num1%num2}' + '}'    
 			self.wfile.write(response.encode())
-							
-			return
 		else:
 			super().do_GET()
 # --- main ---
