@@ -1,36 +1,30 @@
 #!/usr/bin/env python3
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import socketserver
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from http import HTTPStatus
 import json
-import cgi
 
 #print('source code for "http.server":', http.server.__file__)
 
 class web_server(BaseHTTPRequestHandler):
 	def _set_headers(self):
-		self.send_response(200)
-		self.send_header('Content-type', 'application/json')
-		self.end_headers()
+        	self.send_response(HTTPStatus.OK.value)
+        	self.send_header('Content-type', 'application/json')
+        	# Allow requests from any origin, so CORS policies don't
+        	# prevent local development.
+        	self.send_header('Access-Control-Allow-Origin', '*')
+        	self.end_headers()
 		
 	def do_POST(self):
-		ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-        
-		# refuse to receive non-json content
-		if ctype != 'application/json':
-			self.send_response(400)
-			self.end_headers()
-			return
-		length = int(self.headers.getheader('content-length'))
+		length = int(self.headers.get('content-length'))
 		message = json.loads(self.rfile.read(length))
 		self._set_headers()
-		self.wfile.write(json.dumps(message))
+		self.wfile.write(json.dumps({'success': True}).encode('utf-8'))
 		
-def run(server_class=HTTPServer, handler_class=Server, port=4080):
-    server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
-    
-    print(f'Starting httpd on port {port}...')
+def run_server():
+    server_address = ('', 4080)
+    httpd = HTTPServer(server_address, _RequestHandler)
+    print('serving at %s:%d' % server_address)
     httpd.serve_forever()
 
-run()
+run_server()
 
