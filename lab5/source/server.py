@@ -30,6 +30,14 @@ class web_server(BaseHTTPRequestHandler):
 			result["uppercase"] = uppercase
 			result["digits"] = digits
 			result["special"] = special
+		if "num1" in message and "num2" in message:
+			num1 = message["num1"]
+			num2 = message["num2"]
+			result["sum"] = num1+num2
+			result["sub"] = num1-num2
+			result["mul"] = num1*num2
+			result["div"] = num1//num2
+			result["mod"] = num1%num2
 		
 		self._set_headers()
 		self.wfile.write(json.dumps(result).encode('utf-8'))
