@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-import SocketServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import socketserver
 import json
 import cgi
 
