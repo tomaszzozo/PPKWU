@@ -8,24 +8,25 @@ from urllib.parse import urlparse, parse_qs
 #print('source code for "http.server":', http.server.__file__)
 
 class web_server(http.server.SimpleHTTPRequestHandler):
-    
-	def do_GET(self):
-
-		print(self.path)
+	def _set_headers(self):
+		self.send_response(200)
+		self.send_header('Content-type', 'application/json')
+		self.end_headers()
+		
+	def do_POST(self):
+		ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
         
-		if self.path.startswith('/?'):
-			query = urlparse(self.path).query
-			query_components = dict(qc.split("=") for qc in query.split("&"))
-			self.protocol_version = 'HTTP/1.1'
-			self.send_response(200)
-			self.send_header("Content-type", "text/html; charset=UTF-8")
-			self.end_headers()  
-			num1 = int(query_components["num1"])
-			num2 = int(query_components["num2"])
-			response = '{' + f'"sum" : {num1+num2}, "sub" : {num1-num2}, "mul" : {num1*num2}, "div" : {num1//num2}, "mod" : {num1%num2}' + '}'    
-			self.wfile.write(response.encode())
-		else:
-			super().do_GET()
+		# refuse to receive non-json content
+		if ctype != 'application/json':
+			self.send_response(400)
+			self.end_headers()
+			return
+		length = int(self.headers.getheader('content-length'))
+		message = json.loads(self.rfile.read(length))
+		self._set_headers()
+		self.wfile.write(json.dumps(message))
+		
+		
 # --- main ---
 
 PORT = 4080
