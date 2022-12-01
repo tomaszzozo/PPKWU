@@ -22,10 +22,14 @@ class web_server(BaseHTTPRequestHandler):
 		
 		if "str" in message:
 			string = message["str"]
-			result['lowercase'] = sum(1 for c in string if c.islower())
-			result['uppercase'] = sum(1 for c in string if c.isupper())
-			result['digits'] = sum(list(map(lambda x:1 if x.isdigit() else 0,set(string))))
-			result['special'] = len(string)-lowercase-uppercase-digits
+			lowercase = sum(1 for c in string if c.islower())
+			uppercase = sum(1 for c in string if c.isupper())
+			digits = sum(list(map(lambda x:1 if x.isdigit() else 0,set(string))))
+			special = len(string)-lowercase-uppercase-digits
+			result["lowercase"] = lowercase
+			result["uppercase"] = uppercase
+			result["digits"] = digits
+			result["special"] = special
 		
 		self._set_headers()
 		self.wfile.write(json.dumps(result).encode('utf-8'))
