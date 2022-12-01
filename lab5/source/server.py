@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-import http.server
-import socketserver
-import os
-import datetime
-from urllib.parse import urlparse, parse_qs
+from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+import SocketServer
+import json
 import cgi
 
 #print('source code for "http.server":', http.server.__file__)
 
-class web_server(http.server.SimpleHTTPRequestHandler):
+class web_server(BaseHTTPRequestHandler):
 	def _set_headers(self):
 		self.send_response(200)
 		self.send_header('Content-type', 'application/json')
@@ -27,12 +25,12 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 		self._set_headers()
 		self.wfile.write(json.dumps(message))
 		
-		
-# --- main ---
+def run(server_class=HTTPServer, handler_class=Server, port=4080):
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    
+    print 'Starting httpd on port %d...' % port
+    httpd.serve_forever()
 
-PORT = 4080
+run()
 
-print(f'Starting: c{PORT}')
-
-tcp_server = socketserver.TCPServer(("",PORT), web_server)
-tcp_server.serve_forever()
