@@ -17,6 +17,12 @@ class web_server(BaseHTTPRequestHandler):
 	def do_POST(self):
 		length = int(self.headers.get('content-length'))
 		message = json.loads(self.rfile.read(length))
+		
+		result = {}
+		
+		if "str" in message:
+			result["str"] = message["str"]
+		
 		self._set_headers()
 		self.wfile.write(json.dumps({'success': True}).encode('utf-8'))
 		
