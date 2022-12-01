@@ -22,7 +22,7 @@ class web_server(BaseHTTPRequestHandler):
 		
 def run_server():
     server_address = ('', 4080)
-    httpd = HTTPServer(server_address, _RequestHandler)
+    httpd = HTTPServer(server_address, web_server)
     print('serving at %s:%d' % server_address)
     httpd.serve_forever()
 
