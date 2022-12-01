@@ -4,6 +4,7 @@ import socketserver
 import os
 import datetime
 from urllib.parse import urlparse, parse_qs
+import cgi
 
 #print('source code for "http.server":', http.server.__file__)
 
