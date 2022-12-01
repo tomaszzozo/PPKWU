@@ -21,10 +21,14 @@ class web_server(BaseHTTPRequestHandler):
 		result = {}
 		
 		if "str" in message:
-			result["str"] = message["str"]
+			string = message["str"]
+			result['lowercase'] = sum(1 for c in string if c.islower())
+			result['uppercase'] = sum(1 for c in string if c.isupper())
+			result['digits'] = sum(list(map(lambda x:1 if x.isdigit() else 0,set(string))))
+			result['special'] = len(string)-lowercase-uppercase-digits
 		
 		self._set_headers()
-		self.wfile.write(json.dumps({'success': True}).encode('utf-8'))
+		self.wfile.write(json.dumps(result).encode('utf-8'))
 		
 def run_server():
     server_address = ('', 4080)
