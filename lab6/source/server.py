@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from http import HTTPStatus
-import xml.etree.ElementTree as ET
+import xmltodict
 
 #print('source code for "http.server":', http.server.__file__)
 
 class web_server(BaseHTTPRequestHandler):
 	def _set_headers(self):
         	self.send_response(HTTPStatus.OK.value)
-        	self.send_header('Content-type', 'text/html')
+        	self.send_header('Content-type', 'application/json')
         	# Allow requests from any origin, so CORS policies don't
         	# prevent local development.
         	self.send_header('Access-Control-Allow-Origin', '*')
@@ -16,7 +16,7 @@ class web_server(BaseHTTPRequestHandler):
 		
 	def do_POST(self):
 		length = int(self.headers.get('content-length'))
-		message = json.loads(self.rfile.read(length))
+		message = xmltodict.parse(self.rfile.read(length))
 		
 		result = {}
 		
