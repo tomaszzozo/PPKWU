@@ -2,14 +2,14 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from http import HTTPStatus
 import xmltodict
-import json
+from dict2xml import dict2xml
 
 #print('source code for "http.server":', http.server.__file__)
 
 class web_server(BaseHTTPRequestHandler):
 	def _set_headers(self):
         	self.send_response(HTTPStatus.OK.value)
-        	self.send_header('Content-type', 'application/json')
+        	self.send_header('Content-type', 'application/xml')
         	# Allow requests from any origin, so CORS policies don't
         	# prevent local development.
         	self.send_header('Access-Control-Allow-Origin', '*')
@@ -41,8 +41,10 @@ class web_server(BaseHTTPRequestHandler):
 			result["div"] = num1//num2
 			result["mod"] = num1%num2
 		
+		data = {}
+		data["root"] = result
 		self._set_headers()
-		self.wfile.write(json.dumps(result).encode('utf-8'))
+		self.wfile.write(dict2xml(data).encode('utf-8'))
 		
 def run_server():
     server_address = ('', 4080)
