@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from http import HTTPStatus
-import json
+import xml.etree.ElementTree as ET
 
 #print('source code for "http.server":', http.server.__file__)
 
 class web_server(BaseHTTPRequestHandler):
 	def _set_headers(self):
         	self.send_response(HTTPStatus.OK.value)
-        	self.send_header('Content-type', 'application/json')
+        	self.send_header('Content-type', 'text/html')
         	# Allow requests from any origin, so CORS policies don't
         	# prevent local development.
         	self.send_header('Access-Control-Allow-Origin', '*')
