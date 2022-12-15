@@ -44,7 +44,7 @@ class web_server(BaseHTTPRequestHandler):
 		data = {}
 		data["root"] = result
 		self._set_headers()
-		self.wfile.write(('<?xml version="1.0" encoding="UTF-8" ?>' + dict2xml(data)).encode('utf-8'))
+		self.wfile.write(('<?xml version="1.0" encoding="UTF-8" ?>\n' + dict2xml(data)).encode('utf-8'))
 		
 def run_server():
     server_address = ('', 4080)
