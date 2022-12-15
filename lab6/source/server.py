@@ -20,7 +20,8 @@ class web_server(BaseHTTPRequestHandler):
 		message = xmltodict.parse(self.rfile.read(length))
 		
 		result = {}
-		
+		if "root" in message:
+			result["root"] : message["root"]
 		if "str" in message:
 			string = message["str"]
 			lowercase = sum(1 for c in string if c.islower())
