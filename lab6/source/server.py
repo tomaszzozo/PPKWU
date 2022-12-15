@@ -21,7 +21,7 @@ class web_server(BaseHTTPRequestHandler):
 		
 		result = {}
 		if "root" in message:
-			result["root"] : message["root"]
+			message = result["root"]
 		if "str" in message:
 			string = message["str"]
 			lowercase = sum(1 for c in string if c.islower())
