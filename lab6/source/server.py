@@ -33,8 +33,8 @@ class web_server(BaseHTTPRequestHandler):
 			result["digits"] = digits
 			result["special"] = special
 		if "num1" in message and "num2" in message:
-			num1 = message["num1"]
-			num2 = message["num2"]
+			num1 = int(message["num1"])
+			num2 = int(message["num2"])
 			result["sum"] = num1+num2
 			result["sub"] = num1-num2
 			result["mul"] = num1*num2
